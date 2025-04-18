@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { Todo } from '@/entities/Todo';
+import { type ITodo } from '@/entities/Todo';
 import { todosService } from '@/entities/Todo/model/services/todos.service';
 
 export const useCreateTodo = () => {
@@ -8,9 +8,9 @@ export const useCreateTodo = () => {
 
   const { mutate: createTodo, isPending } = useMutation({
     mutationKey: ['todos'],
-    mutationFn: (todo: Omit<Todo, 'id'>) => todosService.createTodo(todo),
+    mutationFn: (todo: Omit<ITodo, 'id'>) => todosService.createTodo(todo),
     onSuccess: (createdTodo) => {
-      queryClient.setQueryData<Todo[]>(['todos'], (oldTodos) => {
+      queryClient.setQueryData<ITodo[]>(['todos'], (oldTodos) => {
         if (!oldTodos) return [createdTodo];
         return [...oldTodos, createdTodo];
       });
